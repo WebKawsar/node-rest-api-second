@@ -1,0 +1,16 @@
+{
+  "name": "node-rest-api-second",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node index",
+    "dev": "nodemon index"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-validator": "^6.9.2",
+    "mongoose": "^5.11.14",
+    "nodemon": "^2.0.7"
+  }
+}
