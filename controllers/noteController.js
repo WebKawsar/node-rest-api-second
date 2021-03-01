@@ -15,26 +15,26 @@ module.exports.createNoteController = async(req, res) => {
         return res.status(400).send(errors.array())
     }
 
-    const note = new Note(req.body)
-   try {
+    const note = new Note({ ...req.body, owner: req.user._id})
+    try {
 
-        await note.save();
-        res.send(note);
+            await note.save();
+            res.send(note);
 
-   } catch (error) {
+    } catch (error) {
        
        res.status(500).send(error);
-   }
+    }
 
 }
 
 
 // Get All Notes
 module.exports.getAllNotesController = async(req, res) => {
-
+    
     try {
 
-        const notes = await Note.find()
+        const notes = await Note.find({owner: req.user._id}).populate("owner", "firstname lastname email");
         if(notes.length){
             return res.send(notes)
         }
@@ -59,7 +59,7 @@ module.exports.getNoteById = async(req, res) => {
     const noteId = req.params.noteId;
     try {
 
-        const note = await Note.findById(noteId)
+        const note = await Note.findById(noteId).populate("owner", "firstname lastname email");
         if(note){
             return res.send(note);
         }
@@ -90,7 +90,10 @@ module.exports.updateNoteById = async(req, res) => {
 
     try {
 
-        const note = await Note.findByIdAndUpdate(noteId, req.body, {
+        const note = await Note.findOneAndUpdate({
+            _id: noteId,
+            owner: req.user._id
+        }, req.body, {
             new: true,
             runValidators: true
         })
@@ -115,7 +118,10 @@ module.exports.deleteNoteById = async(req, res) => {
 
     try {
 
-        const note = await Note.findByIdAndDelete(noteId)
+        const note = await Note.findOneAndDelete({
+            _id: noteId,
+            owner: req.user._id
+        })
         if(!note) return res.status(404).send("Note Not Found");
         res.send(note);
 

@@ -1,15 +1,23 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
+const cookieParser = require("cookie-parser");
+
+
 
 
 
 //import notes routes
 const notesRoute = require("./routes/notes");
+const usersRoute = require("./routes/users");
 const indexRoute = require("./routes")
+
+
 
 //Middleware
 app.use(express.json())
+app.use(cookieParser("secretKey"))
+// app.use(auth)
 
 
 
@@ -21,6 +29,7 @@ connectDB();
 
 //Routes
 app.use("/notes", notesRoute);
+app.use("/users", usersRoute);
 app.use("/", indexRoute)
 
 

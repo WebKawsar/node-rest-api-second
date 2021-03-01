@@ -9,7 +9,8 @@ module.exports.connectDB = async() => {
 
         await mongoose.connect("mongodb://localhost:/task-app", {
             useNewUrlParser: true,
-            useUnifiedTopology: true
+            useUnifiedTopology: true,
+            
         })
         console.log("Database Connected Successfully");
 
